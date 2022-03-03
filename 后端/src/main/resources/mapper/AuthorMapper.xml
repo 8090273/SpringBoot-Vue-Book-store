@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teen.book_store.Mapper.AuthorMapper">
+
+    <select id="getAuthorByName" resultMap="representative">
+        select *,t2.name as book_name from `author` as t1 join `t_book` as t2 on t1.representative = t2.id where t1.pseudonym = #{authorName}
+    </select>
+<!--    不可以省略 result-->
+    <resultMap id="representative" type="com.teen.book_store.Bean.Author">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="bookNumber" column="book_number"/>
+        <result property="pseudonym" column="pseudonym"/>
+        <result property="writingTime" column="writing_time"/>
+        <result property="writingWordNumber" column="writing_word_number"/>
+        <result property="birthday" column="birthday"/>
+        <result property="motto" column="motto"/>
+        <result property="representative.name" column="book_name"/>
+        <!--<collection property="representative" javaType="com.teen.book_store.Bean.Book">
+            <result property="name" column="book_name"/>
+        </collection>-->
+    </resultMap>
+
+</mapper>

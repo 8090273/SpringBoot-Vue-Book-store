@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teen.book_store.Mapper.BookMapper">
+    <select id="initBooks" resultType="com.teen.book_store.Bean.Book">
+        select * from `t_book` limit 12;
+    </select>
+
+<!--    注意：因为#{...}解析成sql语句时候，会在变量外侧自动加单引号'  '，所以这里 % 需要使用双引号"  "，不能使用单引号 '  '，不然会查不到任何结果。-->
+    <select id="selectBooks" parameterType="string" resultType="com.teen.book_store.Bean.Book">
+--      根据书名或者作者名进行查询
+        select * from `t_book` where name like concat("%",#{queryString},"%") or author like concat("%",#{queryString},"%")
+    </select>
+
+<!--    随机查出一条书籍-->
+    <select id="selectRandomBook" resultType="com.teen.book_store.Bean.Book">
+        select t1.* from `t_book` as t1
+            join (select ROUND(
+                    RAND() * (
+                        select MAX(id) from `t_book`
+                        )
+                    ) AS id
+                ) as t2
+        where t1.id >= t2.id
+        order by t1.id asc limit 1
+    </select>
+
+<!--    查询书籍的详细信息-->
+    <select id="selectBookDetails" resultType="map">
+        select t1.*,synopsis,publish,preview,word_length,book_type from `t_book` t1 join `book_Details` t2 where t1.id = t2.id and t1.id = #{id};
+    </select>
+
+<!--    分页查询-->
+    <select id="selectBookByPage" resultType="com.teen.book_store.Bean.Book">
+        select * from `t_book` limit #{page},#{size}
+    </select>
+
+</mapper>

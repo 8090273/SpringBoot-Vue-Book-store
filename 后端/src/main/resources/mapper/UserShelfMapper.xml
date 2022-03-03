@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teen.book_store.Mapper.UserShelfMapper">
+    <insert id="saveBookId">
+        insert into `user_shelf` (username,book_id)
+        value (#{username},#{bookId})
+    </insert>
+
+    <select id="selectBookId" resultType="int">
+        select count(*) from `user_shelf` where username = #{username} and book_id = #{bookId}
+    </select>
+
+    <select id="selectByUsername" resultMap="userShelf">
+        select * from `user_shelf`,`t_book` where book_id = id and username = #{username}
+    </select>
+    <resultMap id="userShelf" type="com.teen.book_store.Bean.UserShelf">
+        <result property="username" column="username"></result>
+        <collection property="books" ofType="com.teen.book_store.Bean.Book">
+            <result property="id" column="id"></result>
+            <result property="name" column="name"></result>
+            <result property="author" column="author"></result>
+            <result property="price" column="price"></result>
+            <result property="sales" column="sales"></result>
+            <result property="stock" column="stock"></result>
+            <result property="img_path" column="img_path"></result>
+        </collection>
+    </resultMap>
+
+    <delete id="deleteByBookId">
+        delete from `user_shelf` where username = #{username} and book_id = #{bookId}
+    </delete>
+
+</mapper>

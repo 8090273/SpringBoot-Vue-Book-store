@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.6</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.teen</groupId>
+    <artifactId>book_store</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>book_store</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <java.version>1.8</java.version>
+        <repackage.classifier/>
+        <spring-native.version>0.10.5</spring-native.version>
+    </properties>
+
+    <dependencies>
+        <!--        引入JDBC驱动-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency>
+        <!--        引入Mysql驱动-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--        引入德鲁伊官方场景 ps:引入最新版，不然会有无法引入javax的问题-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.8</version>
+        </dependency>
+
+        <!--        整合mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.3.4</version>
+        </dependency>
+
+        <!--        整合AOP-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.75</version>
+        </dependency>
+
+
+
+        <!--        web应用场景-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>spring-native</artifactId>
+            <version>${spring-native.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <!--编译跳过测试文件检查的生命周期-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!--<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>${repackage.classifier}</classifier>
+                    <image>
+                        <builder>paketobuildpacks/builder:tiny</builder>
+                        <env>
+                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                        </env>
+                    </image>
+                </configuration>
+            </plugin>-->
+            <!--<plugin>
+                <groupId>org.springframework.experimental</groupId>
+                <artifactId>spring-aot-maven-plugin</artifactId>
+                <version>${spring-native.version}</version>
+                <executions>
+                    <execution>
+                        <id>test-generate</id>
+                        <goals>
+                            <goal>test-generate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <properties>
+                <repackage.classifier>exec</repackage.classifier>
+                <native-buildtools.version>0.9.4</native-buildtools.version>
+            </properties>
+            <dependencies>
+                <!--<dependency>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>junit-platform-native</artifactId>
+                    <version>${native-buildtools.version}</version>
+                    <scope>test</scope>
+                </dependency>-->
+            </dependencies>
+            <build>
+                <plugins>
+                    <!--<plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${native-buildtools.version}</version>
+                        <executions>
+                            <execution>
+                                <id>test-native</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>build-native</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>-->
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
